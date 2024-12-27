@@ -1,1 +1,9 @@
-.venv
+# Python virtual environment
+.venv/
+venv/
+ENV/
+env/
+env.bak/
+.env
+.env.*
+.env
