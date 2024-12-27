@@ -43,7 +43,7 @@ const App = () => {
       </form>
       <ul>
         {comments.map((comment, index) => (
-          <li key={index}>.{comment.content}</li>
+          <li key={index}>{comment.content}</li>
         ))}
       </ul>
     </div>

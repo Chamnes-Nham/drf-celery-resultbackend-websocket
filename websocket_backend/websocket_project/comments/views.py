@@ -14,7 +14,7 @@ class CommentView(APIView):
         return Response(comment_list, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
-        content = request.data.get("content", "")  # Extract the comment content from the request
+        content = request.data.get("content", "")  
         if not content:
             return Response({"error": "Content is required"}, status=status.HTTP_400_BAD_REQUEST)
         task = save_comment_task.delay(content)

@@ -5,6 +5,8 @@ from channels.layers import get_channel_layer
 
 @shared_task
 def save_comment_task(content):
+    if content == 'error':
+        raise Exception({"error": "comment error"})
     comment = Comments.objects.create(content=content)
     
     channel_layer = get_channel_layer()
