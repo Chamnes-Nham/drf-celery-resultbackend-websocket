@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'channels',
     'comments',
     'django_celery_results',
+    'django_filters',
+    
 
 ]
 ASGI_APPLICATION = 'websocket_project.asgi.application'
@@ -55,7 +57,13 @@ CHANNEL_LAYERS = {
 }
 
 CELERY_BROKER_URL = 'redis://localhost:6379/0' 
-CELERY_RESULT_BACKEND = 'django-db'
+# CELERY_RESULT_BACKEND = 'django-db'
+CELERY_RESULT_BACKEND = 'mongodb'
+CELERY_MONGODB_BACKEND_SETTINGS = {
+    'host': 'mongodb://localhost:27017/celery_results',  # Your MongoDB connection string
+    'database': 'celery_results',
+    'taskmeta_collection': 'celery_taskmeta',
+}
 CELERY_CACHE_BACKEND = 'default'
 CELERY_ACCEPT_CONTENT = ['json'] 
 CELERY_TASK_SERIALIZER = 'json'
@@ -96,13 +104,24 @@ WSGI_APPLICATION = 'websocket_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'websocket',
+        'USER': 'postgres',
+        'PASSWORD': 'sarannsari',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -144,5 +163,25 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_ALL_ORIGINS = True
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+}
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173',  # Add your frontend URL here
+]
+# AUTH_USER_MODEL = 'comments.Comments'
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # Default: Database-backed sessions
+SESSION_COOKIE_NAME = 'sessionid'  # Default cookie name
+SESSION_COOKIE_HTTPONLY = True  # Prevent JavaScript access to cookies
+SESSION_COOKIE_SECURE = False  # Set True if using HTTPS
+SESSION_COOKIE_SAMESITE = 'Lax'  #
+CSRF_COOKIE_HTTPONLY = False
+CSRF_TRUSTED_ORIGINS = ['http://localhost:5173']

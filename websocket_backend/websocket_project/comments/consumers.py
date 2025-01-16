@@ -17,3 +17,4 @@ class CommentConsumer(AsyncWebsocketConsumer):
                 {"content": event["content"], "timestamp": event["timestamp"]}
             )
         )
+
