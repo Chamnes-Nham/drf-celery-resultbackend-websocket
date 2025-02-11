@@ -115,10 +115,10 @@ WSGI_APPLICATION = 'websocket_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'websocket',
-        'USER': 'postgres',
-        'PASSWORD': 'sarannsari',
-        'HOST': 'localhost',
+        'NAME': '',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',
         'PORT': '5432',
     }
 }
